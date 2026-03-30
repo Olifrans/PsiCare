@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PsiCare - Gestão de Pacientes</title>
+    <style>
+        /* --- CSS: Estilização Profissional e Limpa --- */
+        :root {
+            --primary-color: #2c7a7b; /* Verde Azulado Clínico */
+            --primary-hover: #234e52;
+            --bg-color: #f7fafc;
+            --text-color: #2d3748;
+            --danger-color: #e53e3e;
+            --white: #ffffff;
+            --border-radius: 8px;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        /* Card do Formulário */
+        .card {
+            background: var(--white);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr auto;
+            gap: 15px;
+            align-items: end;
+        }
+
+        .input-wrapper {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #4a5568;
+        }
+
+        input, select {
+            padding: 10px;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            border-color: var(--primary-color);
+        }
+
+        /* Botões */
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .btn-save {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-save:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-cancel {
+            background-color: #718096;
+            color: white;
+            display: none; /* Escondido por padrão */
+        }
+
+        /* Tabela de Dados */
+        .table-container {
+            overflow-x: auto;
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        th {
+            background-color: #edf2f7;
+            color: #4a5568;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        tr:hover {
+            background-color: #f7fafc;
+        }
+
+        /* Ações na Tabela */
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-edit {
+            background-color: #ecc94b;
+            color: #744210;
+            padding: 5px 10px;
+            font-size: 0.8rem;
+        }
+
+        .btn-delete {
+            background-color: var(--danger-color);
+            color: white;
+            padding: 5px 10px;
+            font-size: 0.8rem;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .form-group {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>PsiCare - Gestão Clínica</h1>
+            <p>Sistema de Cadastro de Pacientes (CRUD)</p>
+        </header>
+
+        <!-- Formulário de Cadastro/Edição -->
+        <div class="card">
+            <form id="patientForm">
+                <input type="hidden" id="patientId"> <!-- Campo oculto para ID -->
+                
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <label for="name">Nome Completo</label>
+                        <input type="text" id="name" placeholder="Ex: João da Silva" required>
+                    </div>
+
+                    <div class="input-wrapper">
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" placeholder="Ex: joao@email.com" required>
+                    </div>
+
+                    <div class="input-wrapper">
+                        <label for="status">Status do Tratamento</label>
+                        <select id="status">
+                            <option value="Ativo">Em Atendimento</option>
+                            <option value="Suspenso">Suspenso</option>
+                            <option value="Alta">Alta Clínica</option>
+                        </select>
+                    </div>
+
+                    <div class="input-wrapper">
+                        <button type="submit" class="btn-save" id="btnSave">Salvar Paciente</button>
+                        <button type="button" class="btn-cancel" id="btnCancel">Cancelar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Tabela de Listagem -->
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>E-mail</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Os dados serão inseridos aqui via JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        /* --- JAVASCRIPT: Lógica do Sistema --- */
+
+        // 1. Seleção de Elementos do DOM
+        const form = document.getElementById('patientForm');
+        const nameInput = document.getElementById('name');
+        const emailInput = document.getElementById('email');
+        const statusInput = document.getElementById('status');
+        const idInput = document.getElementById('patientId');
+        const tableBody = document.getElementById('tableBody');
+        const btnSave = document.getElementById('btnSave');
+        const btnCancel = document.getElementById('btnCancel');
+
+        // 2. Estado Inicial (Carregar do LocalStorage ou criar array vazio)
+        let patients = JSON.parse(localStorage.getItem('psicare_patients')) || [];
+
+        // 3. Funções CRUD
+
+        // CREATE / UPDATE (Salvar)
+        function savePatient(e) {
+            e.preventDefault(); // Impede o recarregamento da página
+
+            const patientData = {
+                id: idInput.value ? parseInt(idInput.value) : Date.now(), // Gera ID único se for novo
+                name: nameInput.value,
+                email: emailInput.value,
+                status: statusInput.value,
+                updatedAt: new Date().toLocaleDateString()
+            };
+
+            if (idInput.value) {
+                // Modo Edição (Update)
+                const index = patients.findIndex(p => p.id == idInput.value);
+                patients[index] = patientData;
+                alert('Paciente atualizado com sucesso!');
+                resetForm();
+            } else {
+                // Modo Criação (Create)
+                patients.push(patientData);
+                alert('Paciente cadastrado com sucesso!');
+                form.reset();
+            }
+
+            updateLocalStorage();
+            renderTable();
+        }
+
+        // READ (Ler e Exibir na Tabela)
+        function renderTable() {
+            tableBody.innerHTML = ''; // Limpa a tabela
+
+            patients.forEach(patient => {
+                const row = document.createElement('tr');
+                
+                // Define cor do status para visualização
+                let statusColor = '#2c7a7b'; // Verde padrão
+                if(patient.status === 'Suspenso') statusColor = '#d69e2e';
+                if(patient.status === 'Alta') statusColor = '#718096';
+
+                row.innerHTML = `
+                    <td><strong>${patient.name}</strong></td>
+                    <td>${patient.email}</td>
+                    <td><span style="color:${statusColor}; font-weight:bold;">${patient.status}</span></td>
+                    <td class="actions">
+                        <button class="btn-edit" onclick="editPatient(${patient.id})">Editar</button>
+                        <button class="btn-delete" onclick="deletePatient(${patient.id})">Excluir</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // UPDATE (Preparar Edição)
+        window.editPatient = function(id) {
+            const patient = patients.find(p => p.id === id);
+            
+            if (patient) {
+                idInput.value = patient.id;
+                nameInput.value = patient.name;
+                emailInput.value = patient.email;
+                statusInput.value = patient.status;
+
+                // Muda a interface para modo edição
+                btnSave.textContent = 'Atualizar Dados';
+                btnCancel.style.display = 'inline-block';
+                window.scrollTo(0, 0); // Sobe a tela para o formulário
+            }
+        }
+
+        // DELETE (Excluir)
+        window.deletePatient = function(id) {
+            if (confirm('Tem certeza que deseja excluir este paciente? Esta ação não pode ser desfeita.')) {
+                patients = patients.filter(p => p.id !== id);
+                updateLocalStorage();
+                renderTable();
+                
+                // Se estiver editando o item que foi excluído, reseta o form
+                if (idInput.value == id) {
+                    resetForm();
+                }
+            }
+        }
+
+        // 4. Funções Auxiliares
+
+        function updateLocalStorage() {
+            localStorage.setItem('psicare_patients', JSON.stringify(patients));
+        }
+
+        function resetForm() {
+            form.reset();
+            idInput.value = '';
+            btnSave.textContent = 'Salvar Paciente';
+            btnCancel.style.display = 'none';
+        }
+
+        // 5. Event Listeners
+        form.addEventListener('submit', savePatient);
+        btnCancel.addEventListener('click', resetForm);
+
+        // 6. Inicialização
+        renderTable();
+
+    </script>
+</body>
+</html>
