@@ -1,4 +1,4 @@
-o readme.md também [# 🧠 PsiCare - Sistema de Gestão para Clínicas Psicológicas
+# 🧠 PsiCare - Sistema de Gestão para Clínicas Psicológicas
 
 <p align="center">
   <img src="https://img.shields.io/badge/Version-1.0.0-blue?style=for-the-badge" alt="Version">
@@ -318,4 +318,4 @@ SOFTWARE.
   <a href="https://olifrans.github.io/PsiCare" target="_blank">
     <img src="https://img.shields.io/badge/🚀_Experimentar_Agora-2c7a7b?style=for-the-badge&logo=github" alt="Experimentar">
   </a>
-</p>]
+</p>
