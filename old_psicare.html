@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -183,7 +182,7 @@
         .sidebar-header {
             text-align: center;
             padding-bottom: 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
             margin-bottom: 20px;
         }
 
@@ -210,7 +209,7 @@
             align-items: center;
             gap: 12px;
             padding: 12px 15px;
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255,255,255,0.8);
             text-decoration: none;
             border-radius: 6px;
             transition: all 0.2s;
@@ -218,7 +217,7 @@
 
         .nav-menu a:hover,
         .nav-menu a.active {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255,255,255,0.1);
             color: white;
         }
 
@@ -233,7 +232,7 @@
             left: 20px;
             right: 20px;
             padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255,255,255,0.1);
         }
 
         .user-info p {
@@ -382,7 +381,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0,0,0,0.5);
             z-index: 1000;
             justify-content: center;
             align-items: center;
@@ -583,7 +582,6 @@
         }
     </style>
 </head>
-
 <body>
 
     <!-- ========== TELA DE LOGIN ========== -->
@@ -937,8 +935,7 @@
                     </div>
                     <div class="form-group">
                         <label>Anamnese</label>
-                        <textarea id="patientAnamnesis" rows="4"
-                            placeholder="Informações iniciais do paciente..."></textarea>
+                        <textarea id="patientAnamnesis" rows="4" placeholder="Informações iniciais do paciente..."></textarea>
                     </div>
                 </form>
             </div>
@@ -1022,13 +1019,11 @@
                     </div>
                     <div class="form-group">
                         <label>Evolução *</label>
-                        <textarea id="recordEvolution" rows="6" required
-                            placeholder="Descreva a evolução do paciente..."></textarea>
+                        <textarea id="recordEvolution" rows="6" required placeholder="Descreva a evolução do paciente..."></textarea>
                     </div>
                     <div class="form-group">
                         <label>Observações Sigilosas</label>
-                        <textarea id="recordNotes" rows="3"
-                            placeholder="Anotações internas (não visíveis ao paciente)"></textarea>
+                        <textarea id="recordNotes" rows="3" placeholder="Anotações internas (não visíveis ao paciente)"></textarea>
                     </div>
                 </form>
             </div>
@@ -1099,37 +1094,6 @@
         <i class="fas fa-check-circle"></i> <span id="notificationMessage">Operação realizada com sucesso!</span>
     </div>
 
-
-
-    <!-- CHATBOT INTEGRADO -->
-    <script src="chatbot.js"></script>
-    <script>
-        // Configuração do chatbot para o sistema
-        document.addEventListener('DOMContentLoaded', function () {
-            if (!window.psiCareChatbot) {
-                window.psiCareChatbot = new PsiCareChatbot({
-                    position: 'right',
-                    context: 'support',
-                    welcomeMessage: 'Olá! 👋 Sou o assistente do PsiCare. Precisa de ajuda com pacientes, agenda ou prontuários?',
-                    typingDelay: { min: 400, max: 1200 }
-                });
-            }
-
-            // Integração com notificações do sistema
-            const originalShowNotification = window.showNotification;
-            if (originalShowNotification) {
-                window.showNotification = function (message, type = 'success') {
-                    originalShowNotification(message, type);
-                    if (type === 'error' && window.psiCareChatbot) {
-                        window.psiCareChatbot._showBadge('❓');
-                    }
-                };
-            }
-        });
-    </script>
-
-
-
     <script>
         // ========== INICIALIZAÇÃO ==========
         mermaid.initialize({ startOnLoad: true });
@@ -1193,9 +1157,9 @@
         }
 
         // ========== AUTENTICAÇÃO ==========
-        document.getElementById('loginForm').addEventListener('submit', function (e) {
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
-
+            
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
             const role = document.getElementById('loginRole').value;
@@ -1293,13 +1257,13 @@
 
             // Show selected page
             document.getElementById(pageId).classList.add('active');
-
+            
             // Update nav active state
             const navLink = document.querySelector(`.nav-menu a[onclick="navigateTo('${pageId}')"]`);
             if (navLink) navLink.classList.add('active');
 
             // Load page data
-            switch (pageId) {
+            switch(pageId) {
                 case 'pageDashboard':
                     loadDashboard();
                     break;
@@ -1325,12 +1289,12 @@
         // ========== MODALS ==========
         function openModal(modalId) {
             document.getElementById(modalId).classList.add('active');
-
+            
             // Set default date for record modal
             if (modalId === 'recordModal') {
                 document.getElementById('recordDate').value = new Date().toISOString().split('T')[0];
             }
-
+            
             // Set default date for payment modal
             if (modalId === 'paymentModal') {
                 document.getElementById('paymentDate').value = new Date().toISOString().split('T')[0];
@@ -1348,14 +1312,14 @@
         function showNotification(message, type = 'success') {
             const notification = document.getElementById('notification');
             const messageEl = document.getElementById('notificationMessage');
-
+            
             messageEl.textContent = message;
             notification.className = 'notification';
             if (type === 'error') notification.classList.add('error');
             if (type === 'warning') notification.classList.add('warning');
-
+            
             notification.classList.add('active');
-
+            
             setTimeout(() => {
                 notification.classList.remove('active');
             }, 3000);
@@ -1374,7 +1338,7 @@
             const today = new Date().toISOString().split('T')[0];
             const todayAppointments = data.appointments.filter(a => a.date === today && a.status !== 'Cancelada');
             const activePatients = data.patients.filter(p => p.status === 'Ativo');
-
+            
             document.getElementById('statActivePatients').textContent = activePatients.length;
             document.getElementById('statTodayAppointments').textContent = todayAppointments.length;
             document.getElementById('statRecords').textContent = data.records.length;
@@ -1387,7 +1351,7 @@
             // Appointments table
             const dashboardTable = document.getElementById('dashboardAppointmentsTable');
             dashboardTable.innerHTML = '';
-
+            
             const upcomingAppointments = data.appointments
                 .filter(a => a.status !== 'Cancelada')
                 .sort((a, b) => new Date(a.date + ' ' + a.time) - new Date(b.date + ' ' + b.time))
@@ -1413,7 +1377,7 @@
         }
 
         function getStatusBadge(status) {
-            switch (status) {
+            switch(status) {
                 case 'Confirmada':
                 case 'Realizada':
                 case 'Pago':
@@ -1522,10 +1486,10 @@
             // Calendar
             const calendarGrid = document.getElementById('calendarGrid');
             calendarGrid.innerHTML = '';
-
+            
             const days = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
             const today = new Date();
-
+            
             // Headers
             days.forEach(day => {
                 const header = document.createElement('div');
@@ -1537,7 +1501,7 @@
             // Days
             const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
             const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-
+            
             for (let i = 0; i < firstDay.getDay(); i++) {
                 calendarGrid.appendChild(document.createElement('div'));
             }
@@ -1545,9 +1509,9 @@
             for (let i = 1; i <= lastDay.getDate(); i++) {
                 const dayEl = document.createElement('div');
                 dayEl.className = 'calendar-day';
-
+                
                 const dateStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
-
+                
                 if (dateStr === new Date().toISOString().split('T')[0]) {
                     dayEl.classList.add('today');
                 }
@@ -1604,7 +1568,7 @@
 
         function populatePatientSelects() {
             const selects = ['appointmentPatient', 'paymentPatient', 'recordPatientSelect'];
-
+            
             selects.forEach(selectId => {
                 const select = document.getElementById(selectId);
                 if (select) {
@@ -1690,7 +1654,7 @@
 
         function loadPatientRecords() {
             const patientId = document.getElementById('recordPatientSelect').value;
-
+            
             if (!patientId) {
                 document.getElementById('recordsCard').style.display = 'none';
                 return;
@@ -1834,9 +1798,9 @@
         }
 
         // ========== CONFIGURAÇÕES ==========
-        document.getElementById('settingsForm').addEventListener('submit', function (e) {
+        document.getElementById('settingsForm').addEventListener('submit', function(e) {
             e.preventDefault();
-
+            
             const name = document.getElementById('settingsName').value;
             const email = document.getElementById('settingsEmail').value;
             const password = document.getElementById('settingsPassword').value;
@@ -1863,20 +1827,17 @@
         }
 
         // ========== INICIALIZAÇÃO ==========
-        window.addEventListener('DOMContentLoaded', function () {
+        window.addEventListener('DOMContentLoaded', function() {
             initializeData();
             checkAuth();
         });
 
         // Close modal when clicking outside
-        window.onclick = function (event) {
+        window.onclick = function(event) {
             if (event.target.classList.contains('modal')) {
                 event.target.classList.remove('active');
             }
         }
     </script>
-
-
 </body>
-
 </html>
